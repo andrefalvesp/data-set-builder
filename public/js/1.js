@@ -22,6 +22,9 @@
     return check;
   });
 
+  $('#cadastro-btn').on('click', function () {
+    window.location.href = './0-create-account.html';
+  });
 
   $('.validate-form .input100').each(function () {
     $(this).focus(function () {

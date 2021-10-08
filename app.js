@@ -23,7 +23,7 @@ server.listen(porta, function () {
 
 ///////////////////////////////DATABASE//////////////////////////////////////////
 
-const connectionString = 'postgresql://postgres:123456@localhost:5432/dataset-b'
+const connectionString = 'postgresql://postgres:123456@localhost:5432/process-mining-sql'
 
 const {Pool} = require('pg');
 const pool = new Pool({
