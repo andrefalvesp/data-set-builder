@@ -4,17 +4,14 @@
     const iduser = testUser();
     $.ajax({
       type: 'GET',
-      url: '/abstract',
-      data: {'iduser': iduser},
+      url: '/incident/group',
       dataType: 'json',
       tryCount : 0,
       retryLimit : 3,
       success: function (response) {
-        const {abstract, title, idarticle, nquestions} = response.rows[0];
-        $("#idarticle").empty().append(idarticle);
-        $("#title").empty().append(title);
-        $("#abstract").empty().append(abstract);
-        $("#nquestions").empty().append(nquestions);
+
+        buildHtmlTable(response.rows, $("#datatable"))
+
       },
       error : function(jqXHR, xhr, textStatus, errorThrown ) {
         if (textStatus !== '') {
@@ -58,6 +55,7 @@
     return check;
 
   });
+
   function saveQA () {
     const iduser = testUser();
     const idarticle = $("#idarticle").text()
@@ -116,6 +114,42 @@
       }
     }
   }
+// Builds the HTML Table out of myList.
+  function buildHtmlTable(list, selector) {
+
+    var columns = addAllColumnHeaders(list, selector);
+
+    for (var i = 0; i < list.length; i++) {
+      var row$ = $('<tr/>');
+      for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+        var cellValue = list[i][columns[colIndex]];
+        if (cellValue == null) cellValue = "";
+        row$.append($('<td/>').html(cellValue));
+      }
+      $(selector).append(row$);
+    }
+  }
+
+// Adds a header row to the table and returns the set of columns.
+// Need to do union of keys from all records as some records may not contain
+// all records.
+  function addAllColumnHeaders(myList, selector) {
+    var columnSet = [];
+    var headerTr$ = $('<tr/>');
+
+    for (var i = 0; i < myList.length; i++) {
+      var rowHash = myList[i];
+      for (var key in rowHash) {
+        if ($.inArray(key, columnSet) == -1) {
+          columnSet.push(key);
+          headerTr$.append($('<th/>').html(key));
+        }
+      }
+    }
+    $(selector).append(headerTr$);
+
+    return columnSet;
+  }
 
   function showValidate(input) {
     var thisAlert = $(input).parent();
@@ -128,6 +162,7 @@
 
     $(thisAlert).removeClass('alert-validate');
   }
+
   $(document).ready(function () {
     // Setup - add a text input to each footer cell
     $('#example thead tr')
@@ -187,4 +222,5 @@
       },
     });
   });
+
 })(jQuery);

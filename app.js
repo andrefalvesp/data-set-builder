@@ -23,14 +23,14 @@ server.listen(porta, function () {
 
 ///////////////////////////////DATABASE//////////////////////////////////////////
 
-const connectionString = 'postgresql://postgres:123456@localhost:5432/process-mining-sql'
+const connectionString = 'postgresql://anpaschoal:123456@localhost:5432/process-mining-sql'
 
 const {Pool} = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL || connectionString,
-    ssl: {
-        rejectUnauthorized: false
-    }
+
+    ssl: !!process.env.DATABASE_URL
+
 });
 
 ////////////////////////////////HOME//////////////////////////////////////////
@@ -423,3 +423,43 @@ app.get('/question-answer/article/all', async (req, res) => {
     } finally {
         client.release();
     }})
+
+app.get('/incident/group', async (req, res) => {
+    const client = await pool.connect();
+    try {
+
+        const query1 = `
+            SELECT
+                idgroup
+            FROM incident as i
+            GROUP BY idgroup
+            ORDER BY random()
+                LIMIT 1;`
+
+        const query2 = `
+            SELECT idevent,
+                   idcase,
+                   idgroup,
+                   startdatetime,
+                   enddatetime,
+                   activity,
+                   resource,
+                   costevent
+            FROM incident as i
+            where idgroup = $1`
+
+        const result1 = await client
+            .query(query1);
+
+        const result2 = await client
+            .query(query2,[result1.rows[0].idgroup]);
+
+        res.send(JSON.stringify(result2));
+
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    } finally {
+        client.release();
+    }
+})
