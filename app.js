@@ -424,6 +424,7 @@ app.get('/question-answer/article/all', async (req, res) => {
         client.release();
     }})
 
+////////////////////////////////////////INCIDENT///////////////////////////////////////////////////////////////
 app.get('/incident/group', async (req, res) => {
     const client = await pool.connect();
     try {
@@ -437,9 +438,9 @@ app.get('/incident/group', async (req, res) => {
                 LIMIT 1;`
 
         const query2 = `
-            SELECT idevent,
+            SELECT 
+                   idevent,
                    idcase,
-                   idgroup,
                    startdatetime,
                    enddatetime,
                    activity,

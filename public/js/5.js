@@ -11,6 +11,7 @@
       success: function (response) {
 
         buildHtmlTable(response.rows, $("#datatable"))
+        buildComBoxItens()
 
       },
       error : function(jqXHR, xhr, textStatus, errorThrown ) {
@@ -114,6 +115,43 @@
       }
     }
   }
+
+  function buildComBoxItens() {
+    const list = [
+        [ "0", "SELECT com operações aritméticas"]
+        ,[ "1", "INNER JOIN"]
+        ,[ "2", "WHERE -- ALL"]
+        ,[ "3", "AVG / COUNT / MIN / MAX / SUM"]
+        ,[ "4", "GROUP BY"]
+        ,[ "5", "HAVING"]
+        ,[ "6", "ORDER BY"]
+        ,[ "7", "BETWEEN"]
+        ,[ "8", "LIKE"]
+        ,[ "9", "IS NULL/IS NOT NULL"]
+        ,[ "10", "UNION"]
+        ,[ "11", "INTERSECT"]
+        ,[ "12", "EXCEPT"]
+        ,[ "13", "IN / NOT IN"]
+        ,[ "14", "ANY / SOME"]
+
+    ];
+
+    const n = 3;
+    const newlist = list
+        .map(x => ({ x, r: Math.random() }))
+        .sort((a, b) => a.r - b.r)
+        .map(a => a.x)
+        .slice(0, n);
+
+    $('#operation').empty();
+    $.each(newlist, function (index, element) {
+      $('#operation').append($('<option/>', {
+        value: element[0],
+        text: element[1]
+      }));
+    });
+  }
+
 // Builds the HTML Table out of myList.
   function buildHtmlTable(list, selector) {
 
