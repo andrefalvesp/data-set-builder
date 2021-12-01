@@ -241,6 +241,14 @@ table, th, td {
   border: 1px solid ;
  }
 
+.wrap-login100-3 {
+  margin-left: 110%;
+  width: 200%;
+  position: relative;
+
+  border: 1px solid ;
+}
+
 /*==================================================================
 [ Form ]*/
 

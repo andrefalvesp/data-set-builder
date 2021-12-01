@@ -143,6 +143,7 @@ app.get('/group', async (req, res) => {
             SELECT idevent,
                    idcase,
                    idgroup,
+                   idlog,
                    startdatetime,
                    enddatetime,
                    activity,
