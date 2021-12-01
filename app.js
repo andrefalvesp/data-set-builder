@@ -251,6 +251,46 @@ app.get('/group/one', async (req, res) => {
     }
 })
 
+
+////////////////////////////////////////SQL///////////////////////////////////////////////////////////////
+app.post('/sql', async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const {iduser
+            ,idgroup
+            ,selectionen
+            ,selectionpt
+            ,operation
+            ,sql} = req.body;
+        const query1 = `
+            INSERT INTO sql(iduser
+                                      ,idgroup
+                                      ,selectionen
+                                      ,selectionpt
+                                      ,operation
+                                      ,sql
+                                      ,date)
+            VALUES ($1, $2, $3, $4, $5, $6, (SELECT current_timestamp)); `;
+
+        const result = await client
+            .query(query1,
+                [iduser
+                    ,idgroup
+                    ,selectionen
+                    ,selectionpt
+                    ,operation
+                    ,sql]);
+
+        res.send(JSON.stringify(result));
+
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    } finally {
+        client.release();
+    }})
+
+
 ////////////////////////////////////////QA///////////////////////////////////////////////////////////////
 app.post('/question-answer', async (req, res) => {
     const client = await pool.connect();

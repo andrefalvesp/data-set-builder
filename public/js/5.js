@@ -58,30 +58,32 @@
     }
 
     if (check) {
-      saveQA()
+      saveSQL()
     }
     return check;
 
   });
 
-  function saveQA () {
+  function saveSQL () {
+
     const iduser = testUser();
-    const idarticle = $("#idarticle").text()
-    const questionen = $("#questionen").val()
-    const answeren = $("#answeren").val()
-    const questionpt = $("#questionpt").val()
-    const answerpt = $("#answerpt").val()
+    const idgroup = $("#idgroup").text()
+    const selectionen = $("#selectionen").val()
+    const selectionpt = $("#selectionpt").val()
+    const operation = $("#operation").val()
+    const sql = $("#sql").val()
+
 
     $.ajax({
       type: 'POST',
-      url: '/question-answer/',
+      url: '/sql/',
       data: {
-        'iduser': iduser,
-        'idarticle': idarticle,
-        'questionen': questionen,
-        'answeren': answeren,
-        'questionpt': questionpt,
-        'answerpt': answerpt
+        'iduser':iduser,
+        'idgroup':idgroup,
+        'selectionen': selectionen,
+        'selectionpt': selectionpt,
+        'operation': operation,
+        'sql': sql
       },
       dataType: 'json',
       success: function (response) {
