@@ -233,6 +233,13 @@ table, th, td {
   position: relative;
 }
 
+.wrap-login100-2 {
+  margin-left: 150%;
+  width: 200%;
+  position: relative;
+
+  border: 1px solid ;
+ }
 
 /*==================================================================
 [ Form ]*/
