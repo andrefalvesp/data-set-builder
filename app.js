@@ -66,9 +66,6 @@ app.get('/user/review', async (req, res) => {
         const query = `
             SELECT u.iduser      as iduser,
                    u.email       as email,
-                   sum(v.view)   as sumview,
-                   sum(v.skip)   as sumskip,
-                   sum(v.reject) as sumreject,
                    sum(v.answer) as sumanswer,
                    sum(s.score)  as sumscore
             FROM user1 as u
