@@ -23,7 +23,7 @@
   });
 
   $('#cadastro-btn').on('click', function () {
-    window.location.href = './0-create-account.html';
+    window.location.href = './0.1-TCLE.html';
   });
 
   $('.validate-form .input100').each(function () {

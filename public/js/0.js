@@ -74,8 +74,10 @@
       data: { 'iduser': iduser, 'email': email, 'name':name, 'idteam':idteam, 'useragreetlce': true },
       dataType: 'json',
       success: function () {
+        alert("Usuário cadastrado com sucesso.");
       },
-      error: function (jqXHR, textStatus, errorThrown) {
+      error: function (jqXHR, textStatus, errorThrown, response) {
+        alert("Usuário não cadastrado. Por favor tente novamente." + response);
         console.log(textStatus, errorThrown);
       }
     });
