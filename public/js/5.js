@@ -2,16 +2,20 @@
   "use strict";
   $(window).one("load", function () {
     const iduser = testUser();
+
     $.ajax({
       type: 'GET',
-      url: '/incident/group',
+      url: '/group',
+      data: { 'iduser': iduser },
       dataType: 'json',
       tryCount : 0,
       retryLimit : 3,
       success: function (response) {
-
+        const idgroup = response.rows[0].idgroup;
+        $("#idgroup").empty().append(idgroup);
         buildHtmlTable(response.rows, $("#datatable"))
         buildComBoxItens()
+        buildNQuestion(idgroup)
 
       },
       error : function(jqXHR, xhr, textStatus, errorThrown ) {
@@ -33,6 +37,9 @@
         }
       }
     });
+
+
+
   });
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -151,6 +158,23 @@
       }));
     });
   }
+  function buildNQuestion(idgroup) {
+    $.ajax({
+      type: 'GET',
+      url: '/group/count',
+      data: { 'idgroup': idgroup },
+      dataType: 'json',
+      tryCount : 0,
+      retryLimit : 3,
+      success: function (response) {
+        $("#nquestions").empty().append(response);
+      },
+      error : function(jqXHR, xhr, textStatus, errorThrown ) {
+          console.log(textStatus, errorThrown);
+        }
+    });
+  }
+
 
 // Builds the HTML Table out of myList.
   function buildHtmlTable(list, selector) {

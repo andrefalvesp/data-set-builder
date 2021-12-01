@@ -119,60 +119,71 @@ app.get('/user/all', async (req, res) => {
         client.release();
     }})
 
-////////////////////////////////ABSTRACT/////////////////////////////////////////////
-app.get('/abstract', async (req, res) => {
+////////////////////////////////////////GROUP///////////////////////////////////////////////////////////////
+
+app.get('/group', async (req, res) => {
     const client = await pool.connect();
     try {
         const {iduser} = req.query;
-        const query1 = `
-            SELECT ar.idarticle,
-                   title,
-                   abstract,
-                   answer + 1 as nquestions
-            FROM article as ar
-                     inner join view1 as vi
-                                on ar.idarticle = vi.idarticle
-            where view = 1
-              and reject = 0
-              and skip = 0
-              and answer < 2
-              and iduser = $1
-            LIMIT 1;`
 
-        const query2 = `
-            SELECT ar.idarticle,
-                   title,
-                   abstract,
-                   1 as nquestions
-            FROM article as ar
-            where ar.idarticle not in
-                  (select idarticle from questionanswer where iduser = $1)
+        const queryCandidatoEmUso = `
+            SELECT g.idgroup
+            FROM group1 as g
+                inner join view1 as vi
+                on g.idgroup = vi.idgroup
+                        where answer < 2 --TODO isso precisa se tornar um param conforme team
+                          and iduser = $1`
 
+        const queryNovo = `
+            SELECT g.idgroup
+            FROM group1 as g
+            where g.idgroup not in
+                  (select idgroup from sql where iduser = $1)
             ORDER BY random()
             LIMIT 1;`
 
-        const query3 = `
-            INSERT INTO view1(date, view, skip, reject, iduser, idarticle, answer)
-            VALUES ((SELECT CURRENT_DATE), 1, 0, 0, $1, $2, 0);`;
+        const queryEvent = `            
+            SELECT idevent,
+                   idcase,
+                   idgroup,
+                   startdatetime,
+                   enddatetime,
+                   activity,
+                   resource,
+                   costevent
+            FROM event
+            where idgroup = $1`
+
+        const queryInsert = `
+            INSERT INTO view1(date,  iduser, idgroup, answer)
+            VALUES ((SELECT CURRENT_TIMESTAMP ), $1, $2, 0);`;
 
         const result1 = await client
-            .query(query1,
+            .query(queryCandidatoEmUso,
                 [iduser]);
 
-        if (result1.rowCount >= 1)
-            res.send(JSON.stringify(result1));
+        let idgroup;
+
+        if (result1.rowCount >= 1) {
+             idgroup = result1.rows[0].idgroup;
+        }
         else {
             const result2 = await client
-                .query(query2,[iduser]);
+                .query(queryNovo,[iduser]);
 
-            const idArticle = result2.rows[0].idarticle;
+            idgroup = result2.rows[0].idgroup;
 
             await client
-                .query(query3,
-                    [iduser, idArticle]);
-
-            res.send(JSON.stringify(result2));
+                .query(queryInsert,
+                    [iduser, idgroup]);
         }
+
+        res.send(JSON.stringify(
+            await client
+                .query(queryEvent,
+                    [idgroup])
+        ));
+
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
@@ -181,7 +192,39 @@ app.get('/abstract', async (req, res) => {
     }
 })
 
-app.get('/abstract/one', async (req, res) => {
+app.get('/group/count', async (req, res) => {
+    const client = await pool.connect();
+    try {
+
+        const {idgroup} = req.query;
+
+        const queryCount = `
+            SELECT answer as nquestions
+            FROM view1
+            where idgroup = $1
+            LIMIT 1`
+
+        const result1 = await client
+            .query(queryCount,
+                [parseInt(idgroup)]);
+
+        if(result1.rowCount >= 1)
+            res.send(JSON.stringify(
+            result1.rows[0].nquestions+1
+        ));
+        else
+            res.send(JSON.stringify(
+                "1"
+            ));
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    } finally {
+        client.release();
+    }
+})
+
+app.get('/group/one', async (req, res) => {
     const client = await pool.connect();
     try {
         const {idarticle} = req.query;
@@ -197,54 +240,6 @@ app.get('/abstract/one', async (req, res) => {
         const result = await client
             .query(query1,
                 [idarticle]);
-
-        res.send(JSON.stringify(result));
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    } finally {
-        client.release();
-    }
-})
-
-app.post('/abstract/reject', async (req, res) => {
-    const client = await pool.connect();
-    try {
-        const {iduser, idArticle} = req.body;
-        const query = `
-            UPDATE view1
-            SET reject= reject + 1
-            WHERE iduser = $1
-              and idarticle = $2;`;
-
-        const result = await client
-            .query(query,
-                [iduser, idArticle]);
-
-        res.send(JSON.stringify(result));
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    } finally {
-        client.release();
-    }
-})
-
-app.post('/abstract/skip', async (req, res) => {
-    const client = await pool.connect();
-    try {
-        const {iduser, idArticle} = req.body;
-        const query = `
-            UPDATE view1
-            SET skip= skip + 1
-            WHERE iduser = $1
-              and idarticle = $2;`;
-
-        const result = await client
-            .query(query,
-                [iduser, idArticle]);
 
         res.send(JSON.stringify(result));
 
@@ -423,43 +418,3 @@ app.get('/question-answer/article/all', async (req, res) => {
         client.release();
     }})
 
-////////////////////////////////////////INCIDENT///////////////////////////////////////////////////////////////
-app.get('/incident/group', async (req, res) => {
-    const client = await pool.connect();
-    try {
-
-        const query1 = `
-            SELECT
-                idgroup
-            FROM incident as i
-            GROUP BY idgroup
-            ORDER BY random()
-                LIMIT 1;`
-
-        const query2 = `
-            SELECT 
-                   idevent,
-                   idcase,
-                   startdatetime,
-                   enddatetime,
-                   activity,
-                   resource,
-                   costevent
-            FROM incident as i
-            where idgroup = $1`
-
-        const result1 = await client
-            .query(query1);
-
-        const result2 = await client
-            .query(query2,[result1.rows[0].idgroup]);
-
-        res.send(JSON.stringify(result2));
-
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    } finally {
-        client.release();
-    }
-})
