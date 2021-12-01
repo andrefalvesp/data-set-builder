@@ -2,7 +2,7 @@
 <html lang="pt-br">
 
 <head>
-    <title>Login</title>
+    <title>Logon</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -28,6 +28,7 @@
                     <span class="focus-input100"></span>
                 </div>
 
+
                 <span class="txt1 p-b-11">
 						Número USP
 					</span>
@@ -36,8 +37,26 @@
                     <span class="focus-input100"></span>
                 </div>
 
+                <span class="txt1 p-b-11">
+						Nome Completo
+					</span>
+                <div class="wrap-input100 validate-input m-b-36" data-validate="Name is required">
+                    <label for="iduser"></label><input class="input100 height-50" type="text" id="name">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="p-b-11" style="display:inline-block;max-width:400px;">
+                        <span class="txt1 p-b-11">
+                            Selecione a sua turma
+                        </span>
+                    <select id="idteam" class="select txt1 p-b-11 p-t-11">
+                        <option value="1">Grupo de pesquisa </option>
+                        <option value="2">Turma Teste Graduação</option>
+                    </select>
+                </div>
+
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" id="login-btn" type="button">
+                    <button class="login100-form-btn" id="save-btn" type="button">
                         Gravar
                     </button>
                     <button class="login100-form-btn" id="cadastro-btn" type="button">
@@ -51,7 +70,7 @@
 
 <!--===============================================================================================-->
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<script src="js/1.js"></script>
+<script src="js/0.js"></script>
 <!--===============================================================================================-->
 
 </body>
