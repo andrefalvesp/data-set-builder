@@ -28,7 +28,7 @@ const connectionString = 'postgresql://anpaschoal:123456@localhost:5432/process-
 const {Pool} = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL || connectionString,
-    ssl: false,
+    ssl: true,
     rejectUnauthorized: false
 
 });
