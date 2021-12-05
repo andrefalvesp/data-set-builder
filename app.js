@@ -26,12 +26,21 @@ server.listen(porta, function () {
 const connectionString = 'postgresql://anpaschoal:123456@localhost:5432/process-mining-sql'
 
 const {Pool} = require('pg');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || connectionString,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+
+const pool = (() => {
+    if (process.env.NODE_ENV !== 'production') {
+        return new Pool({
+            connectionString: connectionString,
+            ssl: false
+        });
+    } else {
+        return new Pool({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+    } })();
 
 ////////////////////////////////HOME//////////////////////////////////////////
 
