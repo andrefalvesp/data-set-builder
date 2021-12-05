@@ -300,3 +300,31 @@ app.post('/sql', async (req, res) => {
         client.release();
     }})
 
+///////////LOG/////
+
+app.get('/log', async (req, res) => {
+    const client = await pool.connect();
+    try {
+
+        const {idlog} = req.query;
+
+        const titleLog = `
+            SELECT title 
+            FROM logs
+            where idlog = $1
+            LIMIT 1`
+
+        const result1 = await client
+            .query(titleLog,
+                [parseInt(idlog)]);
+
+            res.send(JSON.stringify(
+                result1.rows[0]))
+
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    } finally {
+        client.release();
+    }
+})

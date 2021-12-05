@@ -12,10 +12,14 @@
       retryLimit : 3,
       success: function (response) {
         const idgroup = response.rows[0].idgroup;
+        const idlog = response.rows[0].idlog;
+
         $("#idgroup").empty().append(idgroup);
+
         buildHtmlTable(response.rows, $("#datatable"))
         buildComBoxItens()
         buildNQuestion(idgroup)
+        buildTitleLog(idlog)
 
       },
       error : function(jqXHR, xhr, textStatus, errorThrown ) {
@@ -174,6 +178,23 @@
       error : function(jqXHR, xhr, textStatus, errorThrown ) {
           console.log(textStatus, errorThrown);
         }
+    });
+  }
+
+  function buildTitleLog(idlog) {
+    $.ajax({
+      type: 'GET',
+      url: '/log',
+      data: { 'idlog': idlog },
+      dataType: 'json',
+      tryCount : 0,
+      retryLimit : 3,
+      success: function (response) {
+        $("#title").empty().append("Log número " + idlog + " : " + response.title);
+      },
+      error : function(jqXHR, xhr, textStatus, errorThrown ) {
+        console.log(textStatus, errorThrown);
+      }
     });
   }
 
