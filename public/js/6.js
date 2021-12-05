@@ -49,6 +49,7 @@
 
     $(window).ajaxComplete(function () {
         const sumscore = parseInt($("#sumscore").text());
+        const score = parseInt($("#score").text());
         if (sumscore >= score) {
             $("#btnContinuar").empty().append("Finalizar tarefa");
         }
