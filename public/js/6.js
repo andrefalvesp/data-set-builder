@@ -22,7 +22,7 @@
                 $("#email").empty().append(email);
                 $("#sumanswer").empty().append(sumanswer);
                 $("#sumscore").empty().append(sumscore);
-                $("#score").empty().append(" / " + score);
+                $("#score").empty().append(score);
 
             },
             error: function (jqXHR, xhr, textStatus, errorThrown) {
