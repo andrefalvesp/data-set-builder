@@ -18,7 +18,7 @@
 
         buildHtmlTable(response.rows, $("#datatable"))
         buildComBoxItens()
-        buildNQuestion(idgroup)
+        buildNQuestion(iduser, idgroup)
         buildTitleLog(idlog)
 
       },
@@ -164,11 +164,11 @@
       }));
     });
   }
-  function buildNQuestion(idgroup) {
+  function buildNQuestion(iduser, idgroup) {
     $.ajax({
       type: 'GET',
       url: '/group/count',
-      data: { 'idgroup': idgroup },
+      data: { 'idgroup': idgroup, 'iduser': iduser },
       dataType: 'json',
       tryCount : 0,
       retryLimit : 3,

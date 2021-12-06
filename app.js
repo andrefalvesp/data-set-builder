@@ -140,7 +140,7 @@ app.get('/group', async (req, res) => {
             FROM group1 as g
                 inner join view1 as vi
                 on g.idgroup = vi.idgroup
-                        where answer < 2 --TODO isso precisa se tornar um param conforme team
+                        where answer < 2 
                           and iduser = $1`
 
         const queryNovo = `
@@ -206,17 +206,18 @@ app.get('/group/count', async (req, res) => {
     const client = await pool.connect();
     try {
 
-        const {idgroup} = req.query;
+        const {iduser, idgroup} = req.query;
 
         const queryCount = `
             SELECT answer as nquestions
             FROM view1
-            where idgroup = $1
+            where idgroup = $1 and iduser = $2
             LIMIT 1`
 
         const result1 = await client
-            .query(queryCount,
-                [parseInt(idgroup)]);
+            .query(
+                queryCount,
+                [parseInt(idgroup), iduser]);
 
         if(result1.rowCount >= 1)
             res.send(JSON.stringify(
@@ -226,33 +227,6 @@ app.get('/group/count', async (req, res) => {
             res.send(JSON.stringify(
                 "1"
             ));
-    } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-    } finally {
-        client.release();
-    }
-})
-
-app.get('/group/one', async (req, res) => {
-    const client = await pool.connect();
-    try {
-        const {idarticle} = req.query;
-
-        const query1 = `
-            SELECT idarticle,
-                   title,
-                   abstract
-            FROM article
-            where idarticle = $1
-            LIMIT 1;`
-
-        const result = await client
-            .query(query1,
-                [idarticle]);
-
-        res.send(JSON.stringify(result));
-
     } catch (err) {
         console.error(err);
         res.send("Error " + err);
