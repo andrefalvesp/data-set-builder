@@ -110,7 +110,7 @@ app.post('/user', async (req, res) => {
             );
         res.send(JSON.stringify(result))
     } catch (err) {
-        res.status(400).end(JSON.stringify(err.message))
+        res.status(400).end(JSON.stringify(err.message+"."+err.detail))
     } finally {
         client.release();
     }})

@@ -17,7 +17,6 @@
 
     if (check) {
       saveUser(this)
-      window.location.href = './1-login.html';
     }
     return check;
   });
@@ -73,12 +72,14 @@
       url: url,
       data: { 'iduser': iduser, 'email': email, 'name':name, 'idteam':idteam, 'useragreetlce': true },
       dataType: 'json',
-      success: function () {
-        alert("Usuário cadastrado com sucesso.");
+      success: function (response) {
+        alert("Usuário cadastrado com sucesso. Você será direcionado para a tela de login.");
+        window.location.href = './1-login.html';
       },
-      error: function (jqXHR, textStatus, errorThrown, response) {
-        alert("Usuário não cadastrado. Por favor tente novamente." + response);
-        console.log(textStatus, errorThrown);
+      error: function (response) {
+        alert("Usuário não cadastrado. Por favor tente novamente. O servidor respondeu com a seguinte mensagem: " + response.responseJSON);
+        window.location.href = './0-create-account.html';
+
       }
     });
   }
