@@ -108,9 +108,9 @@ app.post('/user', async (req, res) => {
             .query('INSERT INTO user1(iduser,name, email, dateinsert, useragreetlce, idteam) VALUES($1,$2,$3,CURRENT_TIMESTAMP,$4,$5)',
                 [iduser, name, email, useragreetlce, idteam]
             );
+        res.send(JSON.stringify(result))
     } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
+        res.status(400).end(JSON.stringify(err.message))
     } finally {
         client.release();
     }})
