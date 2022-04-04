@@ -13,7 +13,7 @@
             alert("Por favor, você deve confirmar a leitura das instruções antes de iniciar.");
             return;
         }
-        window.location.href = './5-selection-sql.html'
+        window.location.href = './4-image.html'
     }
     function testUser(){
         const localStorage = window.localStorage

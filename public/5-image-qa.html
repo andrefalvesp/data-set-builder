@@ -13,46 +13,38 @@
     <!--===============================================================================================-->
 </head>
 
-<body id="bIS">
+<body id="bQA">
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
             <form class="login100-form validate-form flex-sb flex-w">
                 <div class="login100-form-title p-b-32">
-                    Desenvolvimento de "seleção" em conjunto de logs
+                    Preenchimento das perguntas e respostas
                 </div>
 
-                <div id=idgroup style="display:none">
+                <div id=idimage style="display:none">
                 </div>
 
                 <div class="txt1 p-b-10" id=title>
-                    Conjunto de logs
+                    4.2. PIAFAnno System Architecture
                 </div>
 
-                <div class="txt4" id=table>
-                    <div style="overflow: scroll; height:400px; width:400px;">
-                        <table id="datatable" class="display" style="width:100%">
-                        </table>
-                    </div>
+                <div class="txt4" id=paragraph>
+                    Before launching our development effort, we reviewed ex- isting open-source platforms that could fit for our scenario. Unfortunately, while there are several sequence-annotation tools, such as brat (Stenetorp et al., 2012), WebAnno (Yi- mam et al., 2013), or Doccano8 (Nakayama et al., 2018), we identified, to the best of our efforts, only three candi- dates as open-source, web-based, QA annotation platforms (shown in Table 2). We aim to fill this gap with PIAFAnno. The crowd-sourcing platform used in the original SQuAD paper (Rajpurkar et al., 2016), Daemo (Gaikwad et al., 2015), is publicly available and open-source.9 Nonethe- less, its development seems to have stalled and the project appears not actively maintained.
+                    Turning to the specific QA annotation platforms, we sur- veyed two tools: cdQA-annotator (Mikaelian et al., 2019) and QA-Turk (Fisch, 2018). The former is a part of a larger web-based QA suite. The annotation workflow in cdQA-annotator allows for direct selection of the answer span, which facilitates the task. Furthermore, it uses the SQuADv1.1 file format for input and output files. Nonethe- less, it includes neither contribution nor user management capabilities. Conversely, QA-Turk, based on ieturk (Quach, 2018), is an add-on allowing to create question-answers pairs. By default, it uses Amazon Mechanical Turk as a crowd-sourcing back-end, but can be used with a local- based alternative. While also tailored for crowd-sourcing, it does not support different roles for the contributors. We note that, while these two platforms do not satisfy our re- quirements, they include valuable features such as Mechan- ical Turk integration for QA-Turk or the QA tools included in the cdQA suite (model training, visualization, explo- ration). Finally, those tools do not seem to allow collection of additional answers for a subset of the data (as mentioned above, this allows to both make the evaluation data more robust, and to compute human performance).
                 </div>
 
-                <div class="flex-sb-m w-full p-b-30 p-t-30">
-                    <a class="txt3" href="3.1-logs.html" target="_blank">
-                        Acesse a descrição desse log de eventos, para o melhor entendimento de seus dados.
-                    </a>
+                <div class="txt4 p-b-10 p-t-10" id=image>
+                   <img src="images/1.png"/>
                 </div>
 
-                <div class="txt1 p-b-40 p-t-20">
-                    ESSA SERÁ A SUA RESPOSTA NÚMERO
-                    <span id=nquestions></span>
-                    <span id=ntotal> DE 2</span>
-                    <span>, REFERENTE A ESSE LOG DE EVENTOS.</span>
+                <div class="txt4" id=caption>
+                    Figure 1: PIAFAnno system architecture.
                 </div>
 
                 <div class="txt1 p-b-11">
-                    REQUISIÇÃO EM LÍNGUA NATURAL (EM INGLÊS)
+                    Copie e cole abaixo um trecho do texto que resume a imagem
                 </div>
-
                 <div class="wrap-input100 validate-input m-b-36" data-validate="This field is required">
                     <label for="selectionen"></label>
                     <textarea class="input100 height-100" id="selectionen" type="text"> </textarea>
@@ -60,27 +52,16 @@
                 </div>
 
                 <div class="txt1 p-b-11">
-                    REQUISIÇÃO EM LÍNGUA NATURAL (EM PORTUGUÊS)
+                    Elabore uma pergunta cuja resposta é um trecho do campo acima
                 </div>
-
                 <div class="wrap-input100 validate-input m-b-36" data-validate="This field is required">
                     <label for="selectionpt"></label>
                     <textarea class="input100 height-100" id="selectionpt" type="text"></textarea>
                     <span class="focus-input100"></span>
                 </div>
 
-
-                <div class="p-b-11" style="display:inline-block;max-width:400px;">
-                        <span class="txt1 p-b-11">
-                            Selecione a operação dentre as opções disponíveis
-                        </span>
-                    <select id="operation" class="select txt1 p-b-11 p-t-11">
-
-                    </select>
-                </div>
-
                 <div class="txt1 p-b-11">
-                    CONSULTA EM LINGUAGEM SQL
+                    Resposta referente à pergunta acima
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-36" data-validate="This field is required">
@@ -98,7 +79,6 @@
                         Enviar respostas
                     </button>
                 </div>
-
 
                 <div class="flex-sb-m w-full p-b-30 p-t-30">
                     <a class="txt3" href="8-instructions-lite.html" target="_blank">

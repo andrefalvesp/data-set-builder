@@ -71,10 +71,10 @@
   function saveSQL () {
 
     const iduser = testUser();
-    const idgroup = $("#idgroup").text()
+    const idgroup = '1'
     const selectionen = $("#selectionen").val()
     const selectionpt = $("#selectionpt").val()
-    const operation = $("#operation").val()
+    const operation = '1'
     const sql = $("#sql").val()
 
 
